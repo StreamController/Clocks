@@ -1,0 +1,8 @@
+{
+    "actions.digital-clock.twenty-four-format": "24h format",
+    "actions.digital-clock.twenty-four-format.tooltip": "Utiliser le format 24h (hh:mm:ss) au lieu du format 12h (hh:mm:ss am/pm)",
+    "actions.digital-clock.show-seconds": "Afficher les secondes",
+    "actions.analog-clock.name": "Montre analogique",
+    "actions.digital-clock.name": "Montre numerique",
+    "plugin.name": "Montres"
+}
