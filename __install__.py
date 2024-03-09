@@ -1,3 +1,6 @@
 import urllib.request
+from os import join, abspath, dirname
 
-urllib.request.urlretrieve("https://raw.githubusercontent.com/Core447/analog-clock/main/analog_clock/AnalogClockGenerator.py", "AnalogClockGenerator.py")
+toplevel = dirname(abspath(__file__))
+
+urllib.request.urlretrieve("https://raw.githubusercontent.com/Core447/analog-clock/main/analog_clock/AnalogClockGenerator.py", join(toplevel, "AnalogClockGenerator.py"))
