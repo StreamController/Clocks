@@ -12,13 +12,15 @@ class AnalogClockGenerator:
                  hour_markings_width: int = 5,
                  hour_hand_width: int = 7,
                  minute_hand_width: int = 5,
-                 second_hand_width: int = 3):
+                 second_hand_width: int = 3
+                 ):
         
         self.hour_hand_color = hour_hand_color
         self.minute_hand_color = minute_hand_color
         self.second_hand_color = second_hand_color
         self.origin_color = origin_color
         self.background_color = background_color
+
         self.hour_markings_width = hour_markings_width
         self.hour_hand_width = hour_hand_width
         self.minute_hand_width = minute_hand_width
@@ -52,7 +54,7 @@ class AnalogClockGenerator:
         self.draw_hand(draw, center, angle, lenght, self.hour_hand_color, self.hour_hand_width)
 
         # Draw minute hand
-        lenght = 185
+        lenght = 175
         angle = minute * (360 / 60) + second * (360 / 60) / 60
         self.draw_hand(draw, center, angle, lenght, self.minute_hand_color, self.minute_hand_width)
 
