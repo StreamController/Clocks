@@ -42,7 +42,6 @@ class AnalogClock(ActionBase):
         )
         
     def on_ready(self):
-        return
         self.show()
 
     def on_tick(self):
@@ -63,7 +62,6 @@ class DigitalClock(ActionBase):
         self.points_visible: bool = False # Keep track of ":" status for the clock
 
     def on_ready(self):
-        return
         self.show()
 
     def get_config_rows(self) -> list:
