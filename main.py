@@ -121,7 +121,7 @@ class DigitalClock(ActionBase):
         if settings.get("twenty-four-format", True):
             self.set_bottom_label(None)
         else:
-            label = now.strftime(f"%H{seperator}%M")
+            label = now.strftime(f"%I{seperator}%M")
             self.set_bottom_label(now.strftime("%p"), font_size=font_size)
 
         self.set_center_label(label, font_size=font_size)
