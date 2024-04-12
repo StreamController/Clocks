@@ -3,5 +3,6 @@
     "thumbnail": "store/Thumbnail.png",
     "id": "com_core447_Clocks",
     "name": "Clocks",
-    "description": "Adds an analog and a digital clock."
+    "description": "Adds an analog and a digital clock.",
+    "short-description": "Add clock widgets"
 }
