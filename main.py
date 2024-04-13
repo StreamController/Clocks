@@ -59,6 +59,8 @@ class DigitalClock(ActionBase):
         super().__init__(action_id=action_id, action_name=action_name,
             deck_controller=deck_controller, page=page, coords=coords, plugin_base=plugin_base)
         
+        self.HAS_CONFIGURATION = True
+        
         self.points_visible: bool = False # Keep track of ":" status for the clock
 
     def on_ready(self):
