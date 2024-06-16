@@ -140,7 +140,7 @@ class ClocksPlugin(PluginBase):
         self.analog_clock_holder = ActionHolder(
             plugin_base=self,
             action_base=AnalogClock,
-            action_id_sufix="AnalogClock",
+            action_id_suffix="AnalogClock",
             action_name=self.lm.get("actions.analog-clock.name"),
             action_support={
                 Input.Key: ActionInputSupport.SUPPORTED,
@@ -153,7 +153,7 @@ class ClocksPlugin(PluginBase):
         self.digital_clock_holder = ActionHolder(
             plugin_base=self,
             action_base=DigitalClock,
-            action_id_sufix="DigitalClock",
+            action_id_suffix="DigitalClock",
             action_name=self.lm.get("actions.digital-clock.name"),
             action_support={
                 Input.Key: ActionInputSupport.SUPPORTED,
