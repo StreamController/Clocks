@@ -2,6 +2,8 @@ import json
 from src.backend.PluginManager.ActionBase import ActionBase
 from src.backend.PluginManager.PluginBase import PluginBase
 from src.backend.PluginManager.ActionHolder import ActionHolder
+from src.backend.DeckManagement.InputIdentifier import Input
+from src.backend.PluginManager.ActionInputSupport import ActionInputSupport
 
 # Import gtk modules
 import gi
@@ -138,16 +140,26 @@ class ClocksPlugin(PluginBase):
         self.analog_clock_holder = ActionHolder(
             plugin_base=self,
             action_base=AnalogClock,
-            action_id="com_core447_Clocks::AnalogClock",
-            action_name=self.lm.get("actions.analog-clock.name")
+            action_id_sufix="AnalogClock",
+            action_name=self.lm.get("actions.analog-clock.name"),
+            action_support={
+                Input.Key: ActionInputSupport.SUPPORTED,
+                Input.Dial: ActionInputSupport.SUPPORTED,
+                Input.Touchscreen: ActionInputSupport.UNSUPPORTED
+            }
         )
         self.add_action_holder(self.analog_clock_holder)
 
         self.digital_clock_holder = ActionHolder(
             plugin_base=self,
             action_base=DigitalClock,
-            action_id="com_core447_Clocks::DigitalClock",
-            action_name=self.lm.get("actions.digital-clock.name")
+            action_id_sufix="DigitalClock",
+            action_name=self.lm.get("actions.digital-clock.name"),
+            action_support={
+                Input.Key: ActionInputSupport.SUPPORTED,
+                Input.Dial: ActionInputSupport.SUPPORTED,
+                Input.Touchscreen: ActionInputSupport.UNSUPPORTED
+            }
         )
         self.add_action_holder(self.digital_clock_holder)
 
