@@ -57,7 +57,7 @@ class DigitalClock(ActionBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        self.HAS_CONFIGURATION = True
+        self.has_configuration = True
         
         self.points_visible: bool = False # Keep track of ":" status for the clock
 
