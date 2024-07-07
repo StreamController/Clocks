@@ -128,6 +128,41 @@ class DigitalClock(ActionBase):
 
         self.points_visible = not self.points_visible
 
+
+class Date(ActionBase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self.has_configuration = True
+
+    def get_config_rows(self) -> list:
+        self.key_entry = Adw.EntryRow(title="Date time format")
+
+        self.load_config_values()
+
+        self.key_entry.connect("changed", self.on_key_entry_changed)
+
+        return [self.key_entry]
+    
+    def load_config_values(self):
+        self.key_entry.set_text(self.get_settings().get("key", "%d-%m-%Y"))
+
+    def on_key_entry_changed(self, *args):
+        settings = self.get_settings()
+        settings["key"] = self.key_entry.get_text()
+        self.set_settings(settings)
+        self.show()
+
+    def on_tick(self):
+        self.show()
+
+    def show(self):
+        settings = self.get_settings()
+        key = settings.get("key", "%d-%m-%Y")
+
+        self.set_center_label(datetime.now().strftime(key), font_size=10)
+
+
 class ClocksPlugin(PluginBase):
     def __init__(self):
         super().__init__()
@@ -162,6 +197,19 @@ class ClocksPlugin(PluginBase):
             }
         )
         self.add_action_holder(self.digital_clock_holder)
+
+        self.date_holder = ActionHolder(
+            plugin_base=self,
+            action_base=Date,
+            action_id_suffix="Date",
+            action_name="Date",
+            action_support={
+                Input.Key: ActionInputSupport.SUPPORTED,
+                Input.Dial: ActionInputSupport.UNTESTED,
+                Input.Touchscreen: ActionInputSupport.UNSUPPORTED
+            }
+        )
+        self.add_action_holder(self.date_holder)
 
         # Register plugin
         self.register(
