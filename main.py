@@ -1,4 +1,5 @@
 import json
+from GtkHelper.ItemListComboRow import ItemListComboRow, ItemListComboRowListItem
 from src.backend.PluginManager.ActionBase import ActionBase
 from src.backend.PluginManager.PluginBase import PluginBase
 from src.backend.PluginManager.ActionHolder import ActionHolder
@@ -137,20 +138,36 @@ class Date(ActionBase):
 
     def get_config_rows(self) -> list:
         self.key_entry = Adw.EntryRow(title="Date time format")
+        self.label_positions = [ItemListComboRowListItem("top", "Top"), ItemListComboRowListItem("center", "Center"), ItemListComboRowListItem("bottom", "Bottom")]
+        self.label_position_row = ItemListComboRow(self.label_positions, title="Label position")
 
         self.load_config_values()
 
         self.key_entry.connect("changed", self.on_key_entry_changed)
+        self.label_position_row.connect("notify::selected", self.on_label_position_changed)
 
-        return [self.key_entry]
+        return [self.key_entry, self.label_position_row]
     
     def load_config_values(self):
-        self.key_entry.set_text(self.get_settings().get("key", "%d-%m-%Y"))
+        settings = self.get_settings()
+        self.key_entry.set_text(settings.get("key", "%d-%m-%Y"))
+        self.label_position_row.set_selected_item_by_key(settings.get("label-position"), 1)
 
     def on_key_entry_changed(self, *args):
         settings = self.get_settings()
         settings["key"] = self.key_entry.get_text()
         self.set_settings(settings)
+        self.show()
+
+    def on_label_position_changed(self, *args):
+        settings = self.get_settings()
+        settings["label-position"] = self.label_position_row.get_selected_item().key
+        self.set_settings(settings)
+        ## Clear
+        self.set_top_label(None)
+        self.set_center_label(None)
+        self.set_bottom_label(None)
+        # Show
         self.show()
 
     def on_tick(self):
@@ -159,8 +176,12 @@ class Date(ActionBase):
     def show(self):
         settings = self.get_settings()
         key = settings.get("key", "%d-%m-%Y")
+        label_position = settings.get("label-position", "center")
 
-        self.set_center_label(datetime.now().strftime(key), font_size=10)
+        if label_position not in ["top", "center", "bottom"]:
+            return
+
+        self.set_label(text=datetime.now().strftime(key), font_size=10, position=label_position)
 
 
 class ClocksPlugin(PluginBase):
