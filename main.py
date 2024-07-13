@@ -66,6 +66,10 @@ class DigitalClock(ActionBase):
         self.show()
 
     def get_config_rows(self) -> list:
+
+        self.label_positions = [ItemListComboRowListItem("top", "Top"), ItemListComboRowListItem("center", "Center"), ItemListComboRowListItem("bottom", "Bottom")]
+        self.label_position_row = ItemListComboRow(self.label_positions, title="Label position")
+
         self.twenty_four_format_switch = Adw.SwitchRow(title=self.plugin_base.lm.get("actions.digital-clock.twenty-four-format"),
                                                        tooltip_text=self.plugin_base.lm.get("actions.digital-clock.twenty-four-format.tooltip"))
 
@@ -75,14 +79,17 @@ class DigitalClock(ActionBase):
 
         self.twenty_four_format_switch.connect("notify::active", self.on_twenty_four_format_switch_toggled)
         self.show_seconds_switch.connect("notify::active", self.on_show_seconds_switch_toggled)
+        self.label_position_row.connect("notify::selected", self.on_label_position_changed)
 
-        return [self.twenty_four_format_switch, self.show_seconds_switch]
+        return [self.twenty_four_format_switch, self.show_seconds_switch, self.label_position_row]
+
     
     def load_defaults(self):
         settings = self.get_settings()
 
         self.twenty_four_format_switch.set_active(settings.get("twenty-four-format", True))
         self.show_seconds_switch.set_active(settings.get("show-seconds", False))
+        self.label_position_row.set_selected_item_by_key(settings.get("label-position"), 1)
 
     def on_twenty_four_format_switch_toggled(self, *args):
         settings = self.get_settings()
@@ -98,11 +105,26 @@ class DigitalClock(ActionBase):
 
         self.show()
 
+    def on_label_position_changed(self, *args):
+        settings = self.get_settings()
+        settings["label-position"] = self.label_position_row.get_selected_item().key
+        self.set_settings(settings)
+        ## Clear
+        self.set_top_label(None)
+        self.set_center_label(None)
+        self.set_bottom_label(None)
+        # Show
+        self.show()
+        
     def on_tick(self):
         self.show()
 
     def show(self):
         settings = self.get_settings()
+        label_position = settings.get("label-position", "center")
+
+        if label_position not in ["top", "center", "bottom"]:
+            return
 
         seperator = " " if self.points_visible else ":"
         # Don't blink points if seconds are enabled
@@ -125,7 +147,7 @@ class DigitalClock(ActionBase):
             label = now.strftime(f"%I{seperator}%M")
             self.set_bottom_label(now.strftime("%p"), font_size=font_size)
 
-        self.set_center_label(label, font_size=font_size)
+        self.set_label(label, font_size=font_size, position=label_position)
 
         self.points_visible = not self.points_visible
 
