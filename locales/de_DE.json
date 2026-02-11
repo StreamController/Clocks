@@ -1,8 +1,9 @@
 {
-    "actions.digital-clock.twenty-four-format": "24h Format",
-    "actions.digital-clock.twenty-four-format.tooltip": "Verwende 24h Format (hh:mm:ss) statt 12h Format (hh:mm:ss am/pm)",
-    "actions.digital-clock.show-seconds": "Sekunden anzeigen",
-    "actions.analog-clock.name": "Analoge Uhr",
-    "actions.digital-clock.name": "Digitale Uhr",
-    "plugin.name": "Uhren"
+  "actions.digital-clock.twenty-four-format": "24h Format",
+  "actions.digital-clock.twenty-four-format.tooltip": "Verwende 24h Format (hh:mm:ss) statt 12h Format (hh:mm:ss am/pm)",
+  "actions.digital-clock.show-seconds": "Sekunden anzeigen",
+  "actions.digital-clock.blink-colon": "Doppelpunkt blinken",
+  "actions.analog-clock.name": "Analoge Uhr",
+  "actions.digital-clock.name": "Digitale Uhr",
+  "plugin.name": "Uhren"
 }

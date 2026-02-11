@@ -156,13 +156,18 @@ class DigitalClock(TimeActionBase):
             title=self.plugin_base.lm.get("actions.digital-clock.show-seconds")
         )
 
+        self.blink_colon_switch = Adw.SwitchRow(
+            title=self.plugin_base.lm.get("actions.digital-clock.blink-colon")
+        )
+
         self.load_defaults()
 
         self.twenty_four_format_switch.connect("notify::active", self.on_twenty_four_format_switch_toggled)
         self.show_seconds_switch.connect("notify::active", self.on_show_seconds_switch_toggled)
+        self.blink_colon_switch.connect("notify::active", self.on_blink_colon_switch_toggled)
         self.label_position_row.connect("notify::selected", self.on_label_position_changed)
 
-        return [self.twenty_four_format_switch, self.show_seconds_switch, self.label_position_row]
+        return [self.twenty_four_format_switch, self.show_seconds_switch, self.blink_colon_switch, self.label_position_row]
 
         return rows + [self.twenty_four_format_switch, self.show_seconds_switch]
     
@@ -170,6 +175,7 @@ class DigitalClock(TimeActionBase):
         settings = self.get_settings()
         self.twenty_four_format_switch.set_active(settings.get("twenty-four-format", True))
         self.show_seconds_switch.set_active(settings.get("show-seconds", False))
+        self.blink_colon_switch.set_active(settings.get("blink-colon", True))
         self.label_position_row.set_selected_item_by_key(settings.get("label-position"), 1)
 
     def on_twenty_four_format_switch_toggled(self, *args):
@@ -181,6 +187,13 @@ class DigitalClock(TimeActionBase):
     def on_show_seconds_switch_toggled(self, *args):
         settings = self.get_settings()
         settings["show-seconds"] = self.show_seconds_switch.get_active()
+        self.set_settings(settings)
+
+        self.show()
+
+    def on_blink_colon_switch_toggled(self, *args):
+        settings = self.get_settings()
+        settings["blink-colon"] = self.blink_colon_switch.get_active()
         self.set_settings(settings)
 
         self.show()
@@ -202,12 +215,14 @@ class DigitalClock(TimeActionBase):
     def show(self):
         settings = self.get_settings()
         label_position = settings.get("label-position", "center")
+        blink_colon = settings.get("blink-colon", True)
 
         if label_position not in ["top", "center", "bottom"]:
             return
 
-        seperator = " " if self.points_visible else ":"
-        if settings.get("show-seconds", False):
+        if blink_colon and not settings.get("show-seconds", False):
+            seperator = " " if self.points_visible else ":"
+        else:
             seperator = ":"
 
         now = self.get_current_time()
@@ -226,7 +241,8 @@ class DigitalClock(TimeActionBase):
 
         self.set_label(label, font_size=font_size, position=label_position)
 
-        self.points_visible = not self.points_visible
+        if blink_colon and not settings.get("show-seconds", False):
+            self.points_visible = not self.points_visible
 
 
 class Date(TimeActionBase):
