@@ -1,0 +1,77 @@
+{
+    "plugin": {
+        "description": "Shows the time and the date on a key - as an analog clock face, as digits, or as a freely formatted date. Every action can use a different timezone.",
+        "requirements": "Nothing."
+    },
+    "actions": {
+        "AnalogClock": {
+            "description": "Draws an analog clock face with moving hands on the key. It updates itself and needs no press.",
+            "settings": {
+                "timezone": {
+                    "type": "string",
+                    "default": null,
+                    "description": "Timezone to show, as an IANA name. Left out it uses the computer's own timezone.",
+                    "example": "America/New_York"
+                }
+            }
+        },
+        "DigitalClock": {
+            "description": "Shows the current time as digits on the key. It updates itself and needs no press.",
+            "settings": {
+                "timezone": {
+                    "type": "string",
+                    "default": null,
+                    "description": "Timezone to show, as an IANA name. Left out it uses the computer's own timezone.",
+                    "example": "Europe/Berlin"
+                },
+                "twenty-four-format": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "24 hour clock. Set to false for a 12 hour clock, which also puts AM/PM below the time."
+                },
+                "show-seconds": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Show seconds as well. Without it the colon blinks once a second instead."
+                },
+                "label-position": {
+                    "type": "string",
+                    "default": "center",
+                    "values": [
+                        "top",
+                        "center",
+                        "bottom"
+                    ],
+                    "description": "Which label row the time goes into. Move it to the top or bottom to keep the middle free for an icon."
+                }
+            }
+        },
+        "Date": {
+            "description": "Shows the current date on the key, in a format you choose.",
+            "settings": {
+                "timezone": {
+                    "type": "string",
+                    "default": null,
+                    "description": "Timezone to use, as an IANA name. Left out it uses the computer's own timezone.",
+                    "example": "Asia/Tokyo"
+                },
+                "key": {
+                    "type": "string",
+                    "default": "%d-%m-%Y",
+                    "description": "The date format, in Python strftime codes.",
+                    "example": "%a %d.%m."
+                },
+                "label-position": {
+                    "type": "string",
+                    "default": "center",
+                    "values": [
+                        "top",
+                        "center",
+                        "bottom"
+                    ],
+                    "description": "Which label row the date goes into."
+                }
+            }
+        }
+    }
+}
